@@ -39,3 +39,36 @@ select country, city, count(customernumber) as N_customers from classicmodels.cu
 -- classicmodels.customers 테이블을 이용해 USA 거주자의 수를 계산하고, 그 비중을 구하세요.
 select sum(case when country = 'USA' then 1 else 0 end) as N_usa, sum(case when country = 'USA' then 1 else 0 end)/count(*) as usa_portion from classicmodels.customers;
 
+-- classicmodels.customers, classicmodels.orders 테이블을 결합하고 ORDERNUMBER와 COUNTRY를 출력하세요. (LEFT JOIN)
+SELECT A.ORDERNUMBER, B.COUNTRY
+FROM CLASSICMODELS.ORDERS A
+LEFT JOIN CLASSICMODELS.CUSTOMERS B
+ON A.CUSTOMERNUMBER = B.CUSTOMERNUMBER;
+
+-- classicmodels.customers, classicmodels.orders 테이블을 이용해 USA 거주자의 주문 번호(orderNumber), 국가(Country)를 출력하세요.
+select A.orderNumber, B.country
+from classicmodels.orders as A
+left join classicmodels.customers as B
+on A.customernumber = B.customernumber
+where B.country = 'USA';
+
+-- classicmodels.customers, classicmodels.orders 테이블을 이용해 USA 거주자의 주문 번호, 국가를 출력하세요. (INNER JOIN)
+SELECT A.ORDERNUMBER, B.COUNTRY
+FROM CLASSICMODELS.ORDERS A
+INNER JOIN CLASSICMODELS.CUSTOMERS B
+ON A.CUSTOMERNUMBER = B.CUSTOMERNUMBER
+WHERE B.COUNTRY = 'USA';
+
+-- classicmodels.customers의 country 칼럼을 이용해 북미(Canada, USA), 비북비를 출력하는 칼럼을 생성하세요.
+SELECT COUNTRY, CASE WHEN COUNTRY IN ('Canada', 'USA') THEN "North America" ELSE "OTHERS" END as region
+FROM CLASSICMODELS.CUSTOMERS;
+
+-- classicmodels.customers의 country 칼럼을 이용해 북미(Canada, USA), 비북미를 출력하는 칼럼을 생성하고, 북미, 비북미 거주 고객의 수를 계산하세요.
+SELECT CASE WHEN COUNTRY IN ('Canada', 'USA') THEN "North America" ELSE "Others" END AS REGION, COUNT(CUSTOMERNUMBER) N_CUSTOMER
+FROM CLASSICMODELS.CUSTOMERS
+GROUP BY CASE WHEN COUNTRY IN ('Canada', 'USA') THEN "North America" ELSE "Others" END;
+
+-- 위와 같은 결과를 나타낸다. 1은 Select의 첫 번째 칼럼을 의미하고, 2는 두 번째 칼럼을 의미한다. GROUP BY 1 - 첫 번째 칼럼으로 그룹핑하겠다는 의미이다.
+SELECT CASE WHEN COUNTRY IN ('Canada', 'USA') THEN "North America" ELSE "Others" END AS REGION, COUNT(CUSTOMERNUMBER) N_CUSTOMER
+FROM CLASSICMODELS.CUSTOMERS
+GROUP BY 1;
