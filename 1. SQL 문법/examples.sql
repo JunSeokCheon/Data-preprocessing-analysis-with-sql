@@ -1,4 +1,5 @@
 -- 예제 데이터 셋 : https://www.mysqltutorial.org/mysql-sample-database.aspx
+-- SQL로 맛보는 데이터 전처리 분석
 
 -- classicmodels.customers의 customerNumber를 조회하세요.
 SELECT CUSTOMERNUMBER FROM CLASSICMODELS.CUSTOMERS;
