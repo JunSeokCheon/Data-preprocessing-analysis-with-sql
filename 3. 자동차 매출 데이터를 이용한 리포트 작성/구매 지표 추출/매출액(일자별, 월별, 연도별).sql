@@ -1,0 +1,38 @@
+-- 일별 데이터 조회
+-- 일별 매출액을 조회하려면 주문의 주문일과 매출액이 필요합니다. ERD를 보면 주문 일자(orderdate)는 orders 테이블에 존재하고, 판매액(priceEach * quantityOrdered)은 orderdetails에 존재합니다.
+-- 그래서 orders 테이블의 주문 정보에 orderdetails의 주문 상품 가격을 결합하고 일별 매출액을 조회합니다.
+SELECT A.ORDERDATE,
+B.PRICEEACH*B.QUANTITYORDERED
+FROM CLASSICMODELS.ORDERS A
+LEFT JOIN CLASSICMODELS.ORDERDETAILS B
+ON A.ORDERNUMBER = B.ORDERNUMBER;
+
+-- ORDERDATE로 그룹핑한 뒤, 매출액의 합을 집계하면 일별 매출액을 계산합니다.
+SELECT A.ORDERDATE,
+SUM(B.PRICEEACH*B.QUANTITYORDERED) SALES
+FROM CLASSICMODELS.ORDERS A
+LEFT JOIN CLASSICMODELS.ORDERDETAILS B
+ON A.ORDERNUMBER = B.ORDERNUMBER
+GROUP BY 1
+ORDER BY 1;
+
+-- 월별 매출액 조회
+-- 판매일(orderdate)은 'yyyy-mm-dd'의 형태로 구성되어 있습니다. 'yyyy-mm'을 가져와서 처리하면 월별 매출액을 조회할 수 있을 것입니다.
+-- 문자열에서 원하는 부분만 가져오는 방벙 : SUBSTR(칼럼, 위치, 길이) (ex. SUBSTR('ABCDE', 2, 3) -> BCD)
+SELECT SUBSTR(A.ORDERDATE,1,7) MM,
+SUM(B.PRICEEACH * B.QUANTITYORDERED) SALES
+FROM CLASSICMODELS.ORDERS A
+LEFT JOIN CLASSICMODELS.ORDERDETAILS B
+ON A.ORDERNUMBER = B.ORDERNUMBER
+GROUP BY 1
+ORDER BY 1;
+
+-- 연도별 매출액 조회
+-- 월별과 똑같이 SUBSTR을 사용해서 구할 수 있습니다.
+SELECT SUBSTR(A.ORDERDATE,1,4) YY,
+SUM(B.PRICEEACH * B.QUANTITYORDERED) SALES
+FROM CLASSICMODELS.ORDERS A
+LEFT JOIN CLASSICMODELS.ORDERDETAILS B
+ON A.ORDERNUMBER = B.ORDERNUMBER
+GROUP BY 1
+ORDER BY 1;
