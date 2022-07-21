@@ -45,7 +45,7 @@ FROM MYDATA.DATASET2
 GROUP BY 1, 2
 ORDER BY 1, 2;
 
--- 단순히 리뷰의 수를 계산하게 되면 Department에서 Size와 관련된 주된 Complain 내옹이 무엇인지 파악하기가 어렵습니다.
+-- 단순히 리뷰의 수를 계산하게 되면 Department에서 Size와 관련된 주된 Complain 내용이 무엇인지 파악하기가 어렵습니다.
 -- 그래서 절대 수가 아닌 비중을 구하겠습니다. 총 리뷰 수로 각 칼럼들을 나누면, 각 그룹에서 size 세부 그룹의 비중을 구할 수 있습니다.
 SELECT FLOOR(AGE/10)*10 AGEBAND,
 `DEPARTMENT NAME`,
@@ -60,4 +60,4 @@ GROUP BY 1, 2
 ORDER BY 1, 2;
 
 -- 총 리뷰 수를 SUM(1)과 같은 방법으로 계산했는데, 이는 COUNT(*)과 동일한 결과를 출력합니다.
--- 결론적으로 연령대별, Department볋 size Complain 원인을 파악할 수 있었습니다.
+-- 결론적으로 연령대별, Department별 size Complain 원인을 파악할 수 있었습니다.
